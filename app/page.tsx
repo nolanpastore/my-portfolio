@@ -423,7 +423,7 @@ export default function Home() {
             className="absolute w-full object-cover object-[center_30%]"
             style={{
               filter: "brightness(0.75) saturate(0.9)",
-              top: "-15%",
+              top: "-5%",
               height: "130%",
             }}
           />

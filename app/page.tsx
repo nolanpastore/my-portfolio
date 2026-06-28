@@ -810,20 +810,12 @@ export default function Home() {
       section layouts, and a fully responsive design.
     </p>
 
-    <div className="flex flex-wrap gap-2 mt-5">
-      {["Next.js", "TypeScript", "Tailwind CSS", "React"].map((tag) => (
-        <span
-          key={tag}
-          className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold"
-          style={{
-            borderColor: "#2a3d5a",
-            color: "#7a90b8",
-          }}
-        >
-          {tag}
-        </span>
-      ))}
-    </div>
+    <div className="flex flex-wrap gap-2 mt-5 mb-5">
+  {["Next.js", "TypeScript", "Tailwind CSS", "React"].map(tag => (
+    <span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>
+  ))}
+</div>
+<ProjectBtn href="https://github.com/nolanpastore/my-portfolio">View on GitHub</ProjectBtn>
   </div>
 </Reveal>
 

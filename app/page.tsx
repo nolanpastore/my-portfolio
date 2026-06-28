@@ -104,6 +104,51 @@ function ProjectBtn({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
+/* ── LOADER ── */
+function Loader({ done }: { done: boolean }) {
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-700"
+      style={{
+        backgroundColor: "#0d1225",
+        opacity: done ? 0 : 1,
+        pointerEvents: done ? "none" : "auto",
+      }}
+    >
+      <div className="relative flex items-center justify-center" style={{ width: 80, height: 80 }}>
+        {/* Spinning ring */}
+        <svg
+          className="absolute inset-0"
+          width="80" height="80" viewBox="0 0 80 80"
+          style={{ animation: "spin 1.2s linear infinite" }}
+        >
+          <circle
+            cx="40" cy="40" r="34"
+            fill="none"
+            stroke="#1e2d45"
+            strokeWidth="3"
+          />
+          <circle
+            cx="40" cy="40" r="34"
+            fill="none"
+            stroke="#2563eb"
+            strokeWidth="3"
+            strokeDasharray="60 154"
+            strokeLinecap="round"
+          />
+        </svg>
+        {/* N in the middle */}
+        <span style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "2rem", color: "#e8edf8", lineHeight: 1 }}>
+          N
+        </span>
+      </div>
+      <style>{`
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      `}</style>
+    </div>
+  );
+}
+
 /* ── NAVBAR ── */
 function Navbar({ visible }: { visible: boolean }) {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -254,12 +299,22 @@ export default function Home() {
   const [typed, setTyped] = useState("");
   const [cursorVisible, setCursorVisible] = useState(true);
   const [navVisible, setNavVisible] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const fullText = "Hi, I'm Nolan";
-  const pause = 4; // index at which to pause ("Hi, " is 4 chars)
+  const pause = 4;
 
   useEffect(() => {
-    const t = setTimeout(() => setShow(true), 300);
-    return () => clearTimeout(t);
+    const img = new Image();
+    img.src = "/nolan.jpg";
+    img.onload = () => {
+      setLoaded(true);
+      setTimeout(() => setShow(true), 900);
+    };
+    // Fallback in case image fails
+    img.onerror = () => {
+      setLoaded(true);
+      setTimeout(() => setShow(true), 900);
+    };
   }, []);
 
   // Typewriter with pause after "Hi, "
@@ -328,6 +383,7 @@ export default function Home() {
 
   return (
     <main style={{ fontFamily: "'Nunito', sans-serif" }}>
+      <Loader done={loaded} />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Rhodium+Libre&display=swap');
         ::placeholder { color: #3a5070; }

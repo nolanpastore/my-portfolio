@@ -381,6 +381,18 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Parallax effect on hero image
+  useEffect(() => {
+    const img = document.getElementById("parallax-hero") as HTMLImageElement | null;
+    const handleParallax = () => {
+      if (!img) return;
+      const scrollY = window.scrollY;
+      img.style.transform = `translateY(${scrollY * 0.4}px)`;
+    };
+    window.addEventListener("scroll", handleParallax, { passive: true });
+    return () => window.removeEventListener("scroll", handleParallax);
+  }, []);
+
   return (
     <main style={{ fontFamily: "'Nunito', sans-serif" }}>
       <Loader done={loaded} />
@@ -403,18 +415,19 @@ export default function Home() {
         style={{ backgroundColor: "#0d1225" }}
       >
         {/* Photo — full screen background */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 overflow-hidden">
           <img
             src="/nolan.jpg"
             alt="Nolan Pastore"
-            className="w-full h-full object-cover object-[center_30%]"
-            style={{ filter: "brightness(0.75) saturate(0.9)" }}
+            id="parallax-hero"
+            className="absolute w-full object-cover object-[center_30%]"
+            style={{
+              filter: "brightness(0.75) saturate(0.9)",
+              top: "-15%",
+              height: "130%",
+            }}
           />
-          {/* Dark overlay on right side so text is readable */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to left, rgba(13,18,37,0.95) 45%, rgba(13,18,37,0.6) 62%, transparent 78%)" }}
-          />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to left, rgba(13,18,37,0.95) 45%, rgba(13,18,37,0.6) 62%, transparent 78%)" }} />
         </div>
 
         {/* Text — right side overlaid on photo */}

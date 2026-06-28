@@ -424,7 +424,7 @@ export default function Home() {
               filter: "brightness(0.75) saturate(0.9)",
               top: "-5%",
               height: "130%",
-              objectPosition: "center 30%",
+              objectPosition: "center 60%",
             }}
           />
           {/* Desktop gradient — right side dark */}
@@ -451,7 +451,7 @@ export default function Home() {
         </div>
 
         {/* Mobile text — bottom center */}
-        <div className="relative z-10 md:hidden absolute bottom-16 left-0 right-0 px-8 text-center">
+        <div className="relative z-10 md:hidden absolute bottom-28 left-0 right-0 px-8 text-center">
           <h1 style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "clamp(2.2rem, 10vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#e8edf8", lineHeight: 1.05, minHeight: "1.1em", textShadow: "0 2px 20px rgba(0,0,0,0.6)" }}>
             {typed}
             <span style={{ display: "inline-block", width: "3px", height: "0.85em", backgroundColor: "#2563eb", marginLeft: "4px", verticalAlign: "middle", opacity: cursorVisible ? 1 : 0, transition: "opacity 0.1s", borderRadius: "1px" }} />

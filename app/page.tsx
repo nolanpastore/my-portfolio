@@ -430,11 +430,11 @@ export default function Home() {
             id="parallax-hero"
             className="absolute w-full object-cover"
             style={{
-              filter: "brightness(0.75) saturate(0.9)",
-              top: "5%",
-              height: "130%",
-              objectPosition: "center 85%",
-            }}
+  filter: "brightness(0.75) saturate(0.9)",
+  top: "0",
+  height: "130%",
+  objectPosition: "center 85%",
+}}
           />
           {/* Desktop gradient — right side dark */}
           <div

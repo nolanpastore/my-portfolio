@@ -892,7 +892,7 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer className="px-6 md:px-20 py-8 flex items-center justify-between text-[11px] tracking-[0.2em] uppercase font-bold" style={{ backgroundColor: "#0d1225", borderTop: "1px solid #1e2d45", color: "#2a3d5a" }}>
+      <footer className="px-6 md:px-20 py-8 flex items-center justify-between text-[11px] tracking-[0.2em] uppercase font-bold" style={{ backgroundColor: "#0d1225", borderTop: "1px solid #1e2d45", color: "#4a6080" }}>
         <span>Nolan Pastore</span>
         <span>© 2026</span>
       </footer>

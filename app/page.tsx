@@ -469,6 +469,76 @@ export default function Home() {
           </p>
         </div>
 
+
+{/* ABOUT */}
+      <section id="about" style={{ backgroundColor: "#f0f4f8" }}>
+        <div className="px-6 md:px-20 py-24 max-w-6xl mx-auto">
+          <Reveal>
+            <div className="grid md:grid-cols-[300px_1fr] gap-16 md:gap-24">
+              <div>
+                {[
+                  ["NAME", "Nolan Pastore"],
+                  ["SCHOOL", "University of Dayton"],
+                  ["PROGRAM", "CIS + Communication Management"],
+                  ["GRADE", "Rising Junior"],
+                  ["LOCATION", "Pittsburgh, PA"],
+                  ["INTERESTS", "Technology Strategy · Business Systems · Communication"],
+                ].map(([label, value], i) => (
+                  <div key={i} className="py-4" style={{ borderBottom: "1px solid #d0dae8" }}>
+                    <p className="text-sm leading-6">
+                      <span className="font-extrabold tracking-[0.15em]" style={{ fontFamily: "'Playfair Display', serif", color: "#1a2540" }}>{label}:{" "}</span>
+                      <span className="font-medium" style={{ color: "#4a6080" }}>{value}</span>
+                    </p>
+                  </div>
+                ))}
+                <div className="pt-7">
+                  <a
+                    href="https://www.linkedin.com/in/nolanpastore/"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="LinkedIn"
+                    className="transition-all duration-200"
+                    style={{ border: "2px solid #1a2540", color: "#1a2540", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 44, height: 44 }}
+                    onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#1a2540"; e.currentTarget.style.color = "#f0f4f8"; }}
+                    onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1a2540"; }}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              <div className="space-y-5 text-[15px] leading-8 font-medium" style={{ color: "#4a6080" }}>
+                <p>I'm an Honors student at the University of Dayton pursuing degrees in Computer Information Systems and Communication Management, graduating in May 2028.</p>
+                <p>My interests sit at the intersection of technology, business, and people. Through my internship at <InlineLink href="#experience">PNC Bank</InlineLink>, my work in technical support, and people-facing roles such as tour guiding, I've developed a strong passion for how organizations use technology to support meaningful outcomes for the people they serve.</p>
+                <p>Outside of academics and work, I am deeply committed to community engagement. Whether volunteering to preserve life stories for hospice patients through <InlineLink href="#care360">Care360</InlineLink>, facilitating <InlineLink href="#interfaith">interfaith dialogue</InlineLink> on my college campus, or representing student voices at <InlineLink href="#sga">student government meetings,</InlineLink> I'm most energized by work that brings people closer together.</p>
+                <div className="pt-2 flex items-center gap-4 flex-wrap">
+                  <a
+                    href="/Nolan_Pastore_Resume.pdf"
+                    target="_blank"
+                    className="inline-block text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
+                    style={{ border: "2px solid #1a2540", color: "#1a2540" }}
+                    onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#1a2540"; e.currentTarget.style.color = "#f0f4f8"; }}
+                    onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1a2540"; }}
+                  >
+                    Download Resume
+                  </a>
+                  <a
+                    href="/recommendations"
+                    className="inline-block text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
+                    style={{ border: "2px solid #1a2540", color: "#1a2540" }}
+                    onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#1a2540"; e.currentTarget.style.color = "#f0f4f8"; }}
+                    onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1a2540"; }}
+                  >
+                    Letters of Rec
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+      
         {/* Scroll indicator */}
         <a href="#about" style={{ textDecoration: "none" }} className={`absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-1000 delay-[2600ms] ${show ? "opacity-100" : "opacity-0"}`}>
           <span className="text-[10px] tracking-[0.3em] uppercase font-semibold" style={{ color: "#ffffff" }}>scroll</span>

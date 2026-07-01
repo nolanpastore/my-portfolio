@@ -138,9 +138,18 @@ function Loader({ done }: { done: boolean }) {
           />
         </svg>
         {/* N in the middle */}
-        <span style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "2rem", color: "#e8edf8", lineHeight: 1 }}>
-          N
-        </span>
+        <span
+  style={{
+    fontFamily: "'Rhodium Libre', serif",
+    fontSize: "2rem",
+    color: "#e8edf8",
+    lineHeight: 1,
+    transform: "translateY(3px)",
+    display: "inline-block",
+  }}
+>
+  N
+</span>
       </div>
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

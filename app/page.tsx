@@ -226,7 +226,7 @@ function InvolvementVideo() {
       </div>
       <div className="mt-4">
         <a
-          href="https://www.ohiohouse.gov/legislation/134/hb198/committee"
+          href="https://www.ohiohouse.gov/legislation/134/hb198/"
           target="_blank"
           rel="noreferrer"
           className="inline-block text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 font-bold transition-all duration-200"

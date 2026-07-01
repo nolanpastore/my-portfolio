@@ -253,7 +253,7 @@ function Loader({ done }: { done: boolean }) {
           <circle cx="40" cy="40" r="34" fill="none" stroke="#1e2d45" strokeWidth="3" />
           <circle cx="40" cy="40" r="34" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray="60 154" strokeLinecap="round" />
         </svg>
-        <span style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "2rem", color: "#e8edf8", lineHeight: 1 }}>N</span>
+       <span style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "2rem", color: "#e8edf8", lineHeight: 1, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -48%)" }}>N</span>
       </div>
       <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
@@ -773,7 +773,7 @@ export default function Home() {
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Ohio House of Representatives</p>
                   <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Ohio House Bill 198 Advocate</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
-                    {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically — and have spent years advocating for others facing the same barriers.", "I testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "I authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023, which is a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
+                    {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically, and have spent years advocating for others facing the same barriers.", "I testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "I authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023, which is a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
                       <p key={j}>{p}</p>
                     ))}
                   </div>

@@ -51,9 +51,9 @@ export default function Recommendations() {
           </p>
           <h1
             style={{
-              fontFamily: "'Nunito', sans-serif",
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
-              fontWeight: 800,
+              fontFamily: "'Playfair Display', serif",
+              fontSize: "clamp(1.8rem, 4.5vw, 3rem)",
+              fontWeight: 400,
               color: "#e8edf8",
               lineHeight: 1.1,
             }}

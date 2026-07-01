@@ -118,18 +118,24 @@ function OutlineBtn({ href, children }: { href: string; children: React.ReactNod
 
 /* ── INVOLVEMENT SLIDESHOW ── */
 function InvolvementSlideshow({ photos, positions }: { photos: string[]; positions?: string[] }) {
-
   const [current, setCurrent] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
+  const [animating, setAnimating] = useState(false);
+  const [outgoing, setOutgoing] = useState<number | null>(null);
   const [direction, setDirection] = useState<"left" | "right">("right");
 
   const go = (next: number, dir: "left" | "right") => {
-    if (next === current) return;
+    if (animating || next === current) return;
     setDirection(dir);
-    setPrev(current);
+    setOutgoing(current);
+    setAnimating(true);
     setCurrent(next);
-    setTimeout(() => setPrev(null), 500);
+    setTimeout(() => {
+      setOutgoing(null);
+      setAnimating(false);
+    }, 500);
   };
+
+  const getPos = (i: number) => positions?.[i] ?? "center";
 
   return (
     <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
@@ -142,6 +148,8 @@ function InvolvementSlideshow({ photos, positions }: { photos: string[]; positio
         @keyframes slideFromLeft  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
         @keyframes slideToLeft    { from { transform: translateX(0); } to { transform: translateX(-100%); } }
         @keyframes slideToRight   { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        .slide-img { transition: transform 500ms ease; }
+        .slide-img:hover { transform: scale(1.05); }
       `}</style>
 
       {/* Exiting image */}
@@ -150,7 +158,7 @@ function InvolvementSlideshow({ photos, positions }: { photos: string[]; positio
           src={photos[prev]}
           alt=""
           className={`absolute inset-0 w-full h-full object-cover ${direction === "right" ? "slide-exit-right" : "slide-exit-left"}`}
-          style={{ filter: "brightness(0.85)" }}
+          style={{ filter: "brightness(0.85)", objectPosition: getPos(prev) }}
         />
       )}
       {/* Entering image */}
@@ -158,8 +166,8 @@ function InvolvementSlideshow({ photos, positions }: { photos: string[]; positio
         key={current}
         src={photos[current]}
         alt={`Slide ${current + 1}`}
-        className={`absolute inset-0 w-full h-full object-cover ${prev !== null ? (direction === "right" ? "slide-enter-right" : "slide-enter-left") : ""}`}
-        style={{ filter: "brightness(0.85)" }}
+        className={`absolute inset-0 w-full h-full object-cover slide-img ${prev !== null ? (direction === "right" ? "slide-enter-right" : "slide-enter-left") : ""}`}
+        style={{ filter: "brightness(0.85)", objectPosition: getPos(current) }}
       />
 
       <button onClick={() => go(current === 0 ? photos.length - 1 : current - 1, "left")} className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 z-10 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
@@ -654,7 +662,7 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="sga" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/sga.jpg", "/sga2.jpg"]} positions ={["top", "center"]} />
+                  <InvolvementSlideshow photos={["/sga.jpg", "/sga2.jpg"]} positions={["center 40%", "center"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>UD Student Government Association</p>

@@ -52,12 +52,7 @@ function TimelineItem({ title, subtitle, date, location, bullets, light = false,
           {date}{location ? ` · ${location}` : ""}
         </p>
         <h3 className="text-lg font-bold mb-0.5" style={{ fontFamily: "'Nunito', sans-serif", color: light ? "#1a2540" : "#e8edf8" }}>{title}</h3>
-        <p
-  className="text-base font-semibold mb-3"
-  style={{ color: light ? "#e8edf8" : "#e8edf8" }}
->
-  {subtitle}
-</p>
+        <p className="text-base font-semibold mb-3" style={{ color: "#e8edf8" }}>{subtitle}</p>
         {bullets && bullets.length > 0 && (
           <ul className="space-y-1.5">
             {bullets.map((b, i) => (
@@ -104,56 +99,112 @@ function ProjectBtn({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
+/* ── OUTLINE BUTTON ── */
+function OutlineBtn({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-block text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
+      style={{ border: "2px solid #1a2540", color: "#1a2540" }}
+      onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#1a2540"; e.currentTarget.style.color = "#f0f4f8"; }}
+      onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#1a2540"; }}
+    >
+      {children}
+    </a>
+  );
+}
+
+/* ── INVOLVEMENT SLIDESHOW ── */
+function InvolvementSlideshow({ photos }: { photos: string[] }) {
+  const [current, setCurrent] = useState(0);
+  return (
+    <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
+      <img
+        src={photos[current]}
+        alt={`Slide ${current + 1}`}
+        className="w-full h-full object-cover transition-opacity duration-500"
+        style={{ filter: "brightness(0.85)" }}
+      />
+      <button
+        onClick={() => setCurrent(c => (c === 0 ? photos.length - 1 : c - 1))}
+        className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200"
+        style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}
+      >
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <path d="M13 15l-5-5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <button
+        onClick={() => setCurrent(c => (c === photos.length - 1 ? 0 : c + 1))}
+        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200"
+        style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}
+      >
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <path d="M7 15l5-5-5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+        {photos.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className="w-2 h-2 rounded-full transition-all duration-200"
+            style={{ backgroundColor: i === current ? "#ffffff" : "rgba(255,255,255,0.4)" }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── INVOLVEMENT VIDEO ── */
+function InvolvementVideo() {
+  return (
+    <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="w-full h-full object-cover"
+        style={{ filter: "brightness(0.6)" }}
+      >
+        <source src="/hb198.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <a
+          href="https://www.ohiohouse.gov/legislation/134/hb198/committee"
+          target="_blank"
+          rel="noreferrer"
+          className="text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
+          style={{ border: "2px solid #ffffff", color: "#ffffff", backgroundColor: "rgba(13,18,37,0.5)" }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.borderColor = "#2563eb"; }}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "rgba(13,18,37,0.5)"; e.currentTarget.style.borderColor = "#ffffff"; }}
+        >
+          ▶ Watch My Testimony
+        </a>
+      </div>
+    </div>
+  );
+}
+
 /* ── LOADER ── */
 function Loader({ done }: { done: boolean }) {
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-700"
-      style={{
-        backgroundColor: "#0d1225",
-        opacity: done ? 0 : 1,
-        pointerEvents: done ? "none" : "auto",
-      }}
+      style={{ backgroundColor: "#0d1225", opacity: done ? 0 : 1, pointerEvents: done ? "none" : "auto" }}
     >
       <div className="relative flex items-center justify-center" style={{ width: 80, height: 80 }}>
-        {/* Spinning ring */}
-        <svg
-          className="absolute inset-0"
-          width="80" height="80" viewBox="0 0 80 80"
-          style={{ animation: "spin 1.2s linear infinite" }}
-        >
-          <circle
-            cx="40" cy="40" r="34"
-            fill="none"
-            stroke="#1e2d45"
-            strokeWidth="3"
-          />
-          <circle
-            cx="40" cy="40" r="34"
-            fill="none"
-            stroke="#2563eb"
-            strokeWidth="3"
-            strokeDasharray="60 154"
-            strokeLinecap="round"
-          />
+        <svg className="absolute inset-0" width="80" height="80" viewBox="0 0 80 80" style={{ animation: "spin 1.2s linear infinite" }}>
+          <circle cx="40" cy="40" r="34" fill="none" stroke="#1e2d45" strokeWidth="3" />
+          <circle cx="40" cy="40" r="34" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray="60 154" strokeLinecap="round" />
         </svg>
-        {/* N in the middle */}
-        <span
-  style={{
-    fontFamily: "'Rhodium Libre', serif",
-    fontSize: "2rem",
-    color: "#e8edf8",
-    lineHeight: 1,
-    transform: "translateY(3px)",
-    display: "inline-block",
-  }}
->
-  N
-</span>
+        <span style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "2rem", color: "#e8edf8", lineHeight: 1 }}>N</span>
       </div>
-      <style>{`
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-      `}</style>
+      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
@@ -173,29 +224,23 @@ function Navbar({ visible }: { visible: boolean }) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
-  const links: {
-    label: string;
-    href: string;
-    dropdown?: { label: string; href: string }[];
-  }[] = [
+  const links: { label: string; href: string; dropdown?: { label: string; href: string }[] }[] = [
     { label: "Overview", href: "#about" },
     { label: "Experience", href: "#experience" },
     { label: "Education", href: "#education" },
-    {
-      label: "Involvement", href: "#involvement", dropdown: [
-        { label: "Care360 Legacy", href: "/care360" },
-      ]
-    },
-    {
-      label: "Projects", href: "#projects", dropdown: [
-        { label: "Can Recycler", href: "/can-recycler" },
-        { label: "NFL Stats", href: "/nfl-stats" },
-      ]
-    },
+    { label: "Involvement", href: "#involvement", dropdown: [
+      { label: "Care360 Legacy", href: "/care360" },
+      { label: "Disney Dreamers", href: "#disney" },
+      { label: "HB 198", href: "#hb198" },
+    ]},
+    { label: "Projects", href: "#projects", dropdown: [
+      { label: "Can Recycler", href: "/can-recycler" },
+      { label: "NFL Stats", href: "/nfl-stats" },
+    ]},
     { label: "Connect", href: "#contact" },
     { label: "More", href: "#", dropdown: [
-  { label: "Recommendations", href: "/recommendations" },
-]},
+      { label: "Recommendations", href: "/recommendations" },
+    ]},
   ];
 
   return (
@@ -224,18 +269,10 @@ function Navbar({ visible }: { visible: boolean }) {
                   style={{ color: openDropdown === link.label ? "#ffffff" : "#7a90b8", background: "none", border: "none", cursor: "pointer" }}
                 >
                   {link.label}
-                  <svg
-                    width="10" height="10" viewBox="0 0 10 10" fill="none"
-                    style={{
-                      transform: openDropdown === link.label ? "rotate(180deg)" : "rotate(0deg)",
-                      transition: "transform 200ms ease",
-                    }}
-                  >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ transform: openDropdown === link.label ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 200ms ease" }}>
                     <path d="M2 3.5l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </button>
-
-                {/* Always rendered, animated with opacity + transform */}
                 <div
                   className="absolute top-full right-0 mt-2 py-1 min-w-[160px]"
                   style={{
@@ -250,24 +287,18 @@ function Navbar({ visible }: { visible: boolean }) {
                     pointerEvents: openDropdown === link.label ? "auto" : "none",
                   }}
                 >
-                 {link.label !== "More" && (
-  <a
-    href={link.href}
-    onClick={() => setOpenDropdown(null)}
-    className="block px-5 py-2.5 text-[11px] tracking-[0.15em] uppercase font-bold transition-colors duration-200"
-    style={{ color: "#7a90b8" }}
-    onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.currentTarget.style.color = "#ffffff";
-      e.currentTarget.style.backgroundColor = "rgba(37,99,235,0.15)";
-    }}
-    onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.currentTarget.style.color = "#7a90b8";
-      e.currentTarget.style.backgroundColor = "transparent";
-    }}
-  >
-    {link.label === "Projects" ? "All Projects" : `All ${link.label}`}
-  </a>
-)}
+                  {link.label !== "More" && (
+                    <a
+                      href={link.href}
+                      onClick={() => setOpenDropdown(null)}
+                      className="block px-5 py-2.5 text-[11px] tracking-[0.15em] uppercase font-bold transition-colors duration-200"
+                      style={{ color: "#7a90b8" }}
+                      onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.color = "#ffffff"; e.currentTarget.style.backgroundColor = "rgba(37,99,235,0.15)"; }}
+                      onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.color = "#7a90b8"; e.currentTarget.style.backgroundColor = "transparent"; }}
+                    >
+                      {link.label === "Projects" ? "All Projects" : `All ${link.label}`}
+                    </a>
+                  )}
                   {link.dropdown.map((item) => (
                     <a
                       key={item.label}
@@ -315,47 +346,13 @@ export default function Home() {
   useEffect(() => {
     const img = new Image();
     img.src = "/nolan.jpg";
-    img.onload = () => {
-      setLoaded(true);
-      setTimeout(() => setShow(true), 900);
-    };
-    // Fallback in case image fails
-    img.onerror = () => {
-      setLoaded(true);
-      setTimeout(() => setShow(true), 900);
-    };
+    img.onload = () => { setLoaded(true); setTimeout(() => setShow(true), 900); };
+    img.onerror = () => { setLoaded(true); setTimeout(() => setShow(true), 900); };
   }, []);
 
-  // Typewriter with pause after "Hi, "
   useEffect(() => {
     if (!show) return;
     let i = 0;
-    let paused = false;
-
-    const type = () => {
-      if (i >= fullText.length) return;
-
-      // After typing "Hi, " pause 500ms before continuing
-      if (i === pause && !paused) {
-        paused = true;
-        setTimeout(() => {
-          paused = false;
-          i++;
-          setTyped(fullText.slice(0, i));
-          const interval = setInterval(() => {
-            i++;
-            setTyped(fullText.slice(0, i));
-            if (i >= fullText.length) clearInterval(interval);
-          }, 75);
-        }, 500);
-        return;
-      }
-
-      i++;
-      setTyped(fullText.slice(0, i));
-      if (i < pause) setTimeout(type, 75);
-    };
-
     const interval = setInterval(() => {
       if (i < pause) {
         i++;
@@ -373,30 +370,25 @@ export default function Home() {
         }
       }
     }, 75);
-
     return () => clearInterval(interval);
   }, [show]);
 
-  // Blinking cursor
   useEffect(() => {
     const blink = setInterval(() => setCursorVisible(v => !v), 530);
     return () => clearInterval(blink);
   }, []);
 
-  // Navbar appears after scrolling past hero
   useEffect(() => {
     const handleScroll = () => setNavVisible(window.scrollY > window.innerHeight * 0.8);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Parallax effect on hero image
   useEffect(() => {
     const img = document.getElementById("parallax-hero") as HTMLImageElement | null;
     const handleParallax = () => {
       if (!img) return;
-      const scrollY = window.scrollY;
-      img.style.transform = `translateY(${scrollY * 0.4}px)`;
+      img.style.transform = `translateY(${window.scrollY * 0.4}px)`;
     };
     window.addEventListener("scroll", handleParallax, { passive: true });
     return () => window.removeEventListener("scroll", handleParallax);
@@ -409,46 +401,25 @@ export default function Home() {
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&family=Rhodium+Libre&display=swap');
         ::placeholder { color: #3a5070; }
         input, textarea, button { font-family: 'Nunito', sans-serif; }
-        @keyframes bounceArrow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(6px); }
-        }
+        @keyframes bounceArrow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
         .bounce-arrow { animation: bounceArrow 1.8s ease-in-out infinite; }
       `}</style>
 
       <Navbar visible={navVisible} />
 
-{/* HERO */}
-      <section
-        className="relative w-full flex items-center overflow-hidden"
-        style={{ backgroundColor: "#0d1225", minHeight: "100svh" }}
-      >
+      {/* HERO */}
+      <section className="relative w-full flex items-center overflow-hidden" style={{ backgroundColor: "#0d1225", minHeight: "100svh" }}>
         <div className="absolute inset-0 overflow-hidden">
           <img
             src="/nolan.jpg"
             alt="Nolan Pastore"
             id="parallax-hero"
             className="absolute w-full object-cover"
-            style={{
-  filter: "brightness(0.75) saturate(0.9)",
-  top: "0",
-  height: "130%",
-  objectPosition: "center 85%",
-}}
+            style={{ filter: "brightness(0.75) saturate(0.9)", top: "5%", height: "130%", objectPosition: "center 85%" }}
           />
-          {/* Desktop gradient — right side dark */}
-          <div
-            className="absolute inset-0 hidden md:block"
-            style={{ background: "linear-gradient(to left, rgba(13,18,37,0.95) 45%, rgba(13,18,37,0.6) 62%, transparent 78%)" }}
-          />
-          {/* Mobile gradient — bottom dark so text is readable */}
-           <div
-            className="absolute inset-0 md:hidden"
-            style={{ background: "linear-gradient(to top, rgba(13,18,37,0.95) 20%, rgba(13,18,37,0.3) 50%, transparent 80%)" }}
-          />
+          <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to left, rgba(13,18,37,0.95) 45%, rgba(13,18,37,0.6) 62%, transparent 78%)" }} />
+          <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, rgba(13,18,37,0.95) 20%, rgba(13,18,37,0.3) 50%, transparent 80%)" }} />
         </div>
-
-        {/* Desktop text — right side */}
         <div className="relative z-10 ml-auto w-[42%] pr-16 md:pr-24 text-left hidden md:block">
           <h1 style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "clamp(2.5rem, 5.5vw, 5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#e8edf8", lineHeight: 1.05, minHeight: "1.1em", textShadow: "0 2px 20px rgba(0,0,0,0.6)" }}>
             {typed}
@@ -458,9 +429,8 @@ export default function Home() {
             Student, Developer, and All-Around Nice Guy
           </p>
         </div>
-
-        {/* Mobile text — bottom center */}
-        <div className="relative z-10 md:hidden absolute bottom-20 left-0 right-0 px-8 text-center">          <h1 style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "clamp(2.2rem, 10vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#e8edf8", lineHeight: 1.05, minHeight: "1.1em", textShadow: "0 2px 20px rgba(0,0,0,0.6)" }}>
+        <div className="relative z-10 md:hidden absolute bottom-20 left-0 right-0 px-8 text-center">
+          <h1 style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "clamp(2.2rem, 10vw, 3.5rem)", fontWeight: 400, letterSpacing: "-0.01em", color: "#e8edf8", lineHeight: 1.05, minHeight: "1.1em", textShadow: "0 2px 20px rgba(0,0,0,0.6)" }}>
             {typed}
             <span style={{ display: "inline-block", width: "3px", height: "0.85em", backgroundColor: "#2563eb", marginLeft: "4px", verticalAlign: "middle", opacity: cursorVisible ? 1 : 0, transition: "opacity 0.1s", borderRadius: "1px" }} />
           </h1>
@@ -468,11 +438,17 @@ export default function Home() {
             Student, Developer, and All-Around Nice Guy
           </p>
         </div>
+        <a href="#about" style={{ textDecoration: "none" }} className={`absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-1000 delay-[2600ms] ${show ? "opacity-100" : "opacity-0"}`}>
+          <span className="text-[10px] tracking-[0.3em] uppercase font-semibold" style={{ color: "#ffffff" }}>scroll</span>
+          <div className="bounce-arrow" style={{ color: "#ffffff" }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 4v12M10 16l-4-4M10 16l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </a>
       </section>
-      
 
-
-{/* ABOUT */}
+      {/* ABOUT */}
       <section id="about" style={{ backgroundColor: "#f0f4f8" }}>
         <div className="px-6 md:px-20 py-24 max-w-6xl mx-auto">
           <Reveal>
@@ -540,16 +516,6 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
-      
-        {/* Scroll indicator */}
-        <a href="#about" style={{ textDecoration: "none" }} className={`absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-1000 delay-[2600ms] ${show ? "opacity-100" : "opacity-0"}`}>
-          <span className="text-[10px] tracking-[0.3em] uppercase font-semibold" style={{ color: "#ffffff" }}>scroll</span>
-          <div className="bounce-arrow" style={{ color: "#ffffff" }}>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 4v12M10 16l-4-4M10 16l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-        </a>
 
       {/* EXPERIENCE */}
       <section id="experience" style={{ backgroundColor: "#0d1225" }}>
@@ -636,153 +602,141 @@ export default function Home() {
       </section>
 
       {/* INVOLVEMENT */}
-<section id="involvement" style={{ backgroundColor: "#0d1225" }}>
-  <div className="px-6 md:px-20 py-24 max-w-6xl mx-auto">
-    <Reveal>
-      <Heading>Involvement</Heading>
-    </Reveal>
+      <section id="involvement" style={{ backgroundColor: "#0d1225" }}>
+        <div className="px-6 md:px-20 py-24 max-w-6xl mx-auto">
+          <Reveal><Heading>Involvement</Heading></Reveal>
+          <div className="space-y-28">
 
-    <div className="space-y-28">
-      {[
-        {
-          id: "sga",
-          title: "Director of Marianist Involvement",
-          role: "UD Student Government Association",
-          img: "/sga.jpg",
-          imgRight: false,
-          body: [
-            "🏆 Named 2026 SGA Member of the Year",
-            "In my role, I work to connect students with the University of Dayton's Catholic and Marianist identity and foster interfaith dialogue and understanding across campus.",
-            "I organized and hosted a dinner and dialogue event on Marianist social justice history, bringing together students, faculty, and Marianists.",
-            "Over the course of the year, I built relationships across Campus Ministry, student government, faith communities, and student organizations to strengthen belonging and diversity at UD."
-          ]
-        },
-        {
-          id: "care360",
-          title: "Legacy Project Volunteer",
-          role: "Care360 Hospice",
-          img: "/care360.jpg",
-          imgRight: true,
-          body: [
-            "I help preserve the life stories of hospice patients by transforming audio recordings, photographs, and personal materials into written narratives for their families.",
-            "These stories are then presented to the hospice patient for approval, and given to the patient's family to help preserve their legacy.",
-            "This work has deepened my appreciation for careful listening and the power of storytelling."
-          ]
-        },
-        {
-          id: "interfaith",
-          title: "Interfaith Student Council",
-          role: "Leader",
-          img: "/interfaith.jpg",
-          imgRight: false,
-          body: [
-            "I work alongside students from diverse religious and philosophical backgrounds to foster dialogue, understanding, and genuine inclusion on campus.",
-            "We've collaborated with SGA to launch projects and events that build relationships across different traditions.",
-            "This experience has reinforced my belief that empathy and curiosity are foundational leadership skills."
-          ]
-        },
-        {
-          id: "camp-blue",
-          title: "Camp Counselor",
-          role: "Student Transitions and Family Programs",
-          img: "/camp_blue.jpg",
-          imgRight: true,
-          body: [
-            "🏆 Named 2025 Camp Blue Counselor of the Year",
-            "I served as a Blue Crew Counselor during the University of Dayton's Camp Blue orientation experience, mentoring a group of 15 incoming first-year students.",
-            "Alongside fellow counselors, I guided students through a week of leadership activities, team-building exercises, and service projects designed to help them transition into college life.",
-            "This experience deepened my commitment to peer mentorship and reinforced how much the first few days of college can shape a student's sense of belonging."
-          ]
-        }
-      ].map((item, i) => (
-        <Reveal key={i} delay={80}>
-          <div id={item.id} className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-            <div className={item.imgRight ? "md:order-2" : ""}>
-              <div
-                className="w-full aspect-[4/3] overflow-hidden"
-                style={{ border: "1px solid #1e2d45" }}
-              >
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  style={{
-  filter: "brightness(0.85)",
-  objectPosition: item.id === "sga" ? "center 25%" : "center",
-}}
-                />
-              </div>
-            </div>
-
-            <div className={item.imgRight ? "md:order-1" : ""}>
-              <p
-                className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold"
-                style={{ color: "#2563eb" }}
-              >
-                {item.role}
-              </p>
-
-              <h3
-                className="font-bold mb-6 leading-tight"
-                style={{
-                  fontSize: "clamp(1.4rem, 2.5vw, 2rem)",
-                  color: "#e8edf8"
-                }}
-              >
-                {item.title}
-              </h3>
-
-              <div
-                className="space-y-4 text-[15px] leading-8 font-medium"
-                style={{ color: "#9eb0cc" }}
-              >
-                {item.body.map((p, j) => (
-                  <p
-                    key={j}
-                    style={
-
-                  j === 0 && (item.id === "camp-blue" || item.id === "sga")
-
-                    ? { fontWeight: 800, color: "#e8edf8" }
-
-                    : {}
-
-                  }
-                  >
-                    {p}
-                  </p>
-                ))}
-              </div>
-
-              {item.id === "care360" && (
-                <div className="mt-6">
-                  <a
-                    href="/care360"
-                    className="inline-block text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 font-bold transition-all duration-200"
-                    style={{
-                      border: "1px solid #2563eb",
-                      color: "#2563eb"
-                    }}
-                    onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                      e.currentTarget.style.backgroundColor = "#2563eb";
-                      e.currentTarget.style.color = "#ffffff";
-                    }}
-                    onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.color = "#2563eb";
-                    }}
-                  >
-                    View Legacy Project Examples
-                  </a>
+            {/* SGA */}
+            <Reveal delay={80}>
+              <div id="sga" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                <div>
+                  <div className="w-full aspect-[4/3] overflow-hidden" style={{ border: "1px solid #1e2d45" }}>
+                    <img src="/sga.jpg" alt="SGA" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)", objectPosition: "center 25%" }} />
+                  </div>
                 </div>
-              )}
-            </div>
+                <div>
+                  <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>UD Student Government Association</p>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Director of Marianist Involvement</h3>
+                  <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
+                    {["🏆 Named 2026 SGA Member of the Year", "In my role, I work to connect students with the University of Dayton's Catholic and Marianist identity and foster interfaith dialogue and understanding across campus.", "I organized and hosted a dinner and dialogue event on Marianist social justice history, bringing together students, faculty, and Marianists.", "Over the course of the year, I built relationships across Campus Ministry, student government, faith communities, and student organizations to strengthen belonging and diversity at UD."].map((p, j) => (
+                      <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* CARE360 */}
+            <Reveal delay={80}>
+              <div id="care360" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                <div className="md:order-2">
+                  <div className="w-full aspect-[4/3] overflow-hidden" style={{ border: "1px solid #1e2d45" }}>
+                    <img src="/care360.jpg" alt="Care360" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)", transform: "scale(0.85)", transformOrigin: "center" }} />
+                  </div>
+                </div>
+                <div className="md:order-1">
+                  <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Care360 Hospice</p>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Legacy Project Volunteer</h3>
+                  <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
+                    {["I help preserve the life stories of hospice patients by transforming audio recordings, photographs, and personal materials into written narratives for their families.", "These stories are then presented to the hospice patient for approval, and given to the patient's family to help preserve their legacy.", "This work has deepened my appreciation for careful listening and the power of storytelling."].map((p, j) => (
+                      <p key={j}>{p}</p>
+                    ))}
+                  </div>
+                  <div className="mt-6">
+                    <a
+                      href="/care360"
+                      className="inline-block text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 font-bold transition-all duration-200"
+                      style={{ border: "1px solid #2563eb", color: "#2563eb" }}
+                      onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.color = "#ffffff"; }}
+                      onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#2563eb"; }}
+                    >
+                      View Legacy Project Examples
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* INTERFAITH */}
+            <Reveal delay={80}>
+              <div id="interfaith" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                <div>
+                  <div className="w-full aspect-[4/3] overflow-hidden" style={{ border: "1px solid #1e2d45" }}>
+                    <img src="/interfaith.jpg" alt="Interfaith" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)" }} />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Leader</p>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Interfaith Student Council</h3>
+                  <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
+                    {["I work alongside students from diverse religious and philosophical backgrounds to foster dialogue, understanding, and genuine inclusion on campus.", "We've collaborated with SGA to launch projects and events that build relationships across different traditions.", "This experience has reinforced my belief that empathy and curiosity are foundational leadership skills."].map((p, j) => (
+                      <p key={j}>{p}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* CAMP BLUE */}
+            <Reveal delay={80}>
+              <div id="camp-blue" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                <div className="md:order-2">
+                  <div className="w-full aspect-[4/3] overflow-hidden" style={{ border: "1px solid #1e2d45" }}>
+                    <img src="/camp_blue.jpg" alt="Camp Blue" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)" }} />
+                  </div>
+                </div>
+                <div className="md:order-1">
+                  <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Student Transitions and Family Programs</p>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Camp Counselor</h3>
+                  <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
+                    {["🏆 Named 2025 Camp Blue Counselor of the Year", "I served as a Blue Crew Counselor during the University of Dayton's Camp Blue orientation experience, mentoring a group of 15 incoming first-year students.", "Alongside fellow counselors, I guided students through a week of leadership activities, team-building exercises, and service projects designed to help them transition into college life.", "This experience deepened my commitment to peer mentorship and reinforced how much the first few days of college can shape a student's sense of belonging."].map((p, j) => (
+                      <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* DISNEY */}
+            <Reveal delay={80}>
+              <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                <div>
+                  <InvolvementSlideshow photos={["/disney-1.jpg", "/disney-2.jpg", "/disney-3.jpg", "/disney-4.jpg"]} />
+                </div>
+                <div>
+                  <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Disney Dreamers Academy</h3>
+                  <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
+                    {["🏆 Selected for the exclusive Disney Dreamers Academy Program", "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.", "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences.",].map((p, j) => (
+                      <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* HB198 */}
+            <Reveal delay={80}>
+              <div id="hb198" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+                <div className="md:order-2">
+                  <InvolvementVideo />
+                </div>
+                <div className="md:order-1">
+                  <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Ohio House of Representatives</p>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Hearing Aid Accessibility Advocate</h3>
+                  <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
+                    {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically — and have spent years advocating for others facing the same barriers.", "Testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "Authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023 — a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
+                      <p key={j}>{p}</p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
           </div>
-        </Reveal>
-      ))}
-    </div>
-  </div>
-</section>
+        </div>
+      </section>
 
       {/* PROJECTS */}
       <section id="projects" style={{ backgroundColor: "#f0f4f8" }}>
@@ -790,51 +744,38 @@ export default function Home() {
           <Reveal>
             <Heading light>Projects</Heading>
             <div className="grid md:grid-cols-3 gap-6">
-
               <Reveal delay={0}>
                 <div className="flex flex-col h-full p-8" style={{ backgroundColor: "#1a2540" }}>
                   <div className="mb-6">
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="7" y="4" width="10" height="16" rx="3"/>
-                      <line x1="7" y1="8" x2="17" y2="8"/>
-                      <line x1="7" y1="16" x2="17" y2="16"/>
-                      <line x1="10" y1="4" x2="14" y2="4"/>
+                      <rect x="7" y="4" width="10" height="16" rx="3"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="16" x2="17" y2="16"/><line x1="10" y1="4" x2="14" y2="4"/>
                     </svg>
                   </div>
                   <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#2563eb" }}>Personal Project</p>
                   <h3 className="text-xl font-bold mb-3 leading-tight" style={{ color: "#e8edf8", fontFamily: "'Nunito', sans-serif" }}>Can Recycler Machine</h3>
                   <p className="text-sm leading-6 flex-1" style={{ color: "#7a90b8" }}>Collaborated with engineering students to design and build an Arduino-controlled can crusher. Developed C++ code using an ultrasonic sensor to detect, crush, and dispose of cans. Used 3D printing with Bambu Lab for the mechanism and branding.</p>
                   <div className="flex flex-wrap gap-2 mt-5 mb-5">
-                    {["Arduino", "C++", "3D Printing"].map(tag => (
-                      <span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>
-                    ))}
+                    {["Arduino", "C++", "3D Printing"].map(tag => (<span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>))}
                   </div>
                   <ProjectBtn href="/can-recycler">Project Overview</ProjectBtn>
                 </div>
               </Reveal>
-
               <Reveal delay={80}>
                 <div className="flex flex-col h-full p-8" style={{ backgroundColor: "#1a2540" }}>
                   <div className="mb-6">
                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="3" y1="20" x2="21" y2="20"/>
-                      <rect x="4" y="14" width="4" height="6" fill="white" stroke="white"/>
-                      <rect x="10" y="8" width="4" height="12" fill="white" stroke="white"/>
-                      <rect x="16" y="4" width="4" height="16" fill="white" stroke="white"/>
+                      <line x1="3" y1="20" x2="21" y2="20"/><rect x="4" y="14" width="4" height="6" fill="white" stroke="white"/><rect x="10" y="8" width="4" height="12" fill="white" stroke="white"/><rect x="16" y="4" width="4" height="16" fill="white" stroke="white"/>
                     </svg>
                   </div>
                   <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#2563eb" }}>University of Dayton</p>
                   <h3 className="text-xl font-bold mb-3 leading-tight" style={{ color: "#e8edf8", fontFamily: "'Nunito', sans-serif" }}>NFL Stats Analysis Program</h3>
                   <p className="text-sm leading-6 flex-1" style={{ color: "#7a90b8" }}>Built a Python program analyzing NFL team performance across 2003–2023 seasons using CSV datasets. Extracted win/loss ratios, touchdowns, and trends with Pandas, and generated visualizations with Matplotlib and Seaborn.</p>
                   <div className="flex flex-wrap gap-2 mt-5 mb-5">
-                    {["Python", "Pandas", "Matplotlib"].map(tag => (
-                      <span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>
-                    ))}
+                    {["Python", "Pandas", "Matplotlib"].map(tag => (<span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>))}
                   </div>
                   <ProjectBtn href="/nfl-stats">Project Overview</ProjectBtn>
                 </div>
               </Reveal>
-
               <Reveal delay={160}>
                 <div className="flex flex-col h-full p-8" style={{ backgroundColor: "#1a2540" }}>
                   <div className="mb-6">
@@ -846,70 +787,26 @@ export default function Home() {
                   <h3 className="text-xl font-bold mb-3 leading-tight" style={{ color: "#e8edf8", fontFamily: "'Nunito', sans-serif" }}>Matchmaker Program</h3>
                   <p className="text-sm leading-6 flex-1" style={{ color: "#7a90b8" }}>Built a Java program with two modules: an Assessment that determines Myers-Briggs personality type from user preferences, and a Matchmaker that ranks compatibility with previous users on a scoring system out of 100.</p>
                   <div className="flex flex-wrap gap-2 mt-5">
-                    {["Java", "Myers-Briggs", "Algorithms"].map(tag => (
-                      <span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>
-                    ))}
+                    {["Java", "Myers-Briggs", "Algorithms"].map(tag => (<span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>))}
                   </div>
                 </div>
               </Reveal>
-
               <Reveal delay={240}>
-  <div
-    className="flex flex-col h-full p-8 md:col-span-3"
-    style={{ backgroundColor: "#1a2540" }}
-  >
-    <div className="mb-6">
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="white"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
-      </svg>
-    </div>
-
-    <p
-      className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2"
-      style={{ color: "#2563eb" }}
-    >
-      Personal Project
-    </p>
-
-    <h3
-      className="text-xl font-bold mb-3 leading-tight"
-      style={{
-        color: "#e8edf8",
-        fontFamily: "'Nunito', sans-serif",
-      }}
-    >
-      This Website
-    </h3>
-
-    <p
-      className="text-sm leading-6 flex-1"
-      style={{ color: "#7a90b8" }}
-    >
-      Designed and built this personal portfolio site from scratch using
-      Next.js, TypeScript, and Tailwind CSS. Features scroll-reveal
-      animations, a typewriter hero, anchor-linked navigation, alternating
-      section layouts, and a fully responsive design.
-    </p>
-
-    <div className="flex flex-wrap gap-2 mt-5 mb-5">
-  {["Next.js", "TypeScript", "Tailwind CSS", "React"].map(tag => (
-    <span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>
-  ))}
-</div>
-<ProjectBtn href="https://github.com/nolanpastore/my-portfolio">View on GitHub</ProjectBtn>
-  </div>
-</Reveal>
-
+                <div className="flex flex-col h-full p-8 md:col-span-3" style={{ backgroundColor: "#1a2540" }}>
+                  <div className="mb-6">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
+                    </svg>
+                  </div>
+                  <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#2563eb" }}>Personal Project</p>
+                  <h3 className="text-xl font-bold mb-3 leading-tight" style={{ color: "#e8edf8", fontFamily: "'Nunito', sans-serif" }}>This Website</h3>
+                  <p className="text-sm leading-6 flex-1" style={{ color: "#7a90b8" }}>Designed and built this personal portfolio site from scratch using Next.js, TypeScript, and Tailwind CSS. Features scroll-reveal animations, a typewriter hero, anchor-linked navigation, alternating section layouts, and a fully responsive design.</p>
+                  <div className="flex flex-wrap gap-2 mt-5 mb-5">
+                    {["Next.js", "TypeScript", "Tailwind CSS", "React"].map(tag => (<span key={tag} className="text-[10px] tracking-[0.1em] px-3 py-1 rounded-full border font-semibold" style={{ borderColor: "#2a3d5a", color: "#7a90b8" }}>{tag}</span>))}
+                  </div>
+                  <ProjectBtn href="https://github.com/nolanpastore/my-portfolio">View on GitHub</ProjectBtn>
+                </div>
+              </Reveal>
             </div>
           </Reveal>
         </div>
@@ -924,13 +821,7 @@ export default function Home() {
               <div>
                 <p className="text-[15px] leading-8 font-medium mb-8" style={{ color: "#9eb0cc" }}>I'm open to opportunities in technology strategy, business systems, and cross-functional roles where technology and people intersect.</p>
                 <div className="space-y-4">
-                  {[
-
-                      ["Email", "pastoren1@udayton.edu"],
-
-                      ["LinkedIn", "linkedin.com/in/nolanpastore"]
-
-                    ].map(([label, value]) => (
+                  {[["Email", "pastoren1@udayton.edu"], ["LinkedIn", "linkedin.com/in/nolanpastore"]].map(([label, value]) => (
                     <div key={label} className="flex gap-4 text-sm">
                       <span className="text-[10px] tracking-[0.2em] uppercase pt-1 w-20 shrink-0 font-bold" style={{ color: "#2563eb" }}>{label}</span>
                       <span className="font-medium" style={{ color: "#e8edf8" }}>{value}</span>

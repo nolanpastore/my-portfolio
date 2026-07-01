@@ -119,44 +119,55 @@ function OutlineBtn({ href, children }: { href: string; children: React.ReactNod
 /* ── INVOLVEMENT SLIDESHOW ── */
 function InvolvementSlideshow({ photos }: { photos: string[] }) {
   const [current, setCurrent] = useState(0);
-  const [sliding, setSliding] = useState(false);
+  const [prev, setPrev] = useState<number | null>(null);
   const [direction, setDirection] = useState<"left" | "right">("right");
 
   const go = (next: number, dir: "left" | "right") => {
-    if (sliding) return;
+    if (next === current) return;
     setDirection(dir);
-    setSliding(true);
-    setTimeout(() => {
-      setCurrent(next);
-      setSliding(false);
-    }, 350);
+    setPrev(current);
+    setCurrent(next);
+    setTimeout(() => setPrev(null), 500);
   };
-
-  const prev = () => go(current === 0 ? photos.length - 1 : current - 1, "left");
-  const next = () => go(current === photos.length - 1 ? 0 : current + 1, "right");
 
   return (
     <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
       <style>{`
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideInLeft  { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        .slide-right { animation: slideInRight 350ms ease; }
-        .slide-left  { animation: slideInLeft  350ms ease; }
+        .slide-enter-right { animation: slideFromRight 500ms cubic-bezier(.4,0,.2,1) forwards; }
+        .slide-enter-left  { animation: slideFromLeft  500ms cubic-bezier(.4,0,.2,1) forwards; }
+        .slide-exit-right  { animation: slideToLeft    500ms cubic-bezier(.4,0,.2,1) forwards; }
+        .slide-exit-left   { animation: slideToRight   500ms cubic-bezier(.4,0,.2,1) forwards; }
+        @keyframes slideFromRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes slideFromLeft  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+        @keyframes slideToLeft    { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        @keyframes slideToRight   { from { transform: translateX(0); } to { transform: translateX(100%); } }
       `}</style>
+
+      {/* Exiting image */}
+      {prev !== null && (
+        <img
+          src={photos[prev]}
+          alt=""
+          className={`absolute inset-0 w-full h-full object-cover ${direction === "right" ? "slide-exit-right" : "slide-exit-left"}`}
+          style={{ filter: "brightness(0.85)" }}
+        />
+      )}
+      {/* Entering image */}
       <img
         key={current}
         src={photos[current]}
         alt={`Slide ${current + 1}`}
-        className={`w-full h-full object-cover ${sliding ? "" : direction === "right" ? "slide-right" : "slide-left"}`}
+        className={`absolute inset-0 w-full h-full object-cover ${prev !== null ? (direction === "right" ? "slide-enter-right" : "slide-enter-left") : ""}`}
         style={{ filter: "brightness(0.85)" }}
       />
-      <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
+
+      <button onClick={() => go(current === 0 ? photos.length - 1 : current - 1, "left")} className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 z-10 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M13 15l-5-5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
       </button>
-      <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
+      <button onClick={() => go(current === photos.length - 1 ? 0 : current + 1, "right")} className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 z-10 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M7 15l5-5-5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
       </button>
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
         {photos.map((_, i) => (
           <button key={i} onClick={() => go(i, i > current ? "right" : "left")} className="w-2 h-2 rounded-full transition-all duration-200" style={{ backgroundColor: i === current ? "#ffffff" : "rgba(255,255,255,0.4)" }} />
         ))}
@@ -167,29 +178,54 @@ function InvolvementSlideshow({ photos }: { photos: string[] }) {
 
 /* ── INVOLVEMENT VIDEO ── */
 function InvolvementVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleWatch = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = false;
+    if (v.requestFullscreen) v.requestFullscreen();
+    else if ((v as any).webkitEnterFullscreen) (v as any).webkitEnterFullscreen();
+    v.play();
+  };
+
   return (
-    <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="w-full h-full object-cover"
-        style={{ filter: "brightness(0.6)" }}
-      >
-        <source src="/hb198.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 flex items-center justify-center">
+    <div>
+      <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ filter: "brightness(0.6)" }}
+        >
+          <source src="/hb198.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <button
+            onClick={handleWatch}
+            className="text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
+            style={{ border: "2px solid #ffffff", color: "#ffffff", backgroundColor: "rgba(13,18,37,0.5)", cursor: "pointer", fontFamily: "'Nunito', sans-serif" }}
+            onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.borderColor = "#2563eb"; }}
+            onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => { e.currentTarget.style.backgroundColor = "rgba(13,18,37,0.5)"; e.currentTarget.style.borderColor = "#ffffff"; }}
+          >
+            ▶ Watch My Testimony
+          </button>
+        </div>
+      </div>
+      <div className="mt-4">
         <a
           href="https://www.ohiohouse.gov/legislation/134/hb198/committee"
           target="_blank"
           rel="noreferrer"
-          className="text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
-          style={{ border: "2px solid #ffffff", color: "#ffffff", backgroundColor: "rgba(13,18,37,0.5)" }}
-          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.borderColor = "#2563eb"; }}
-          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "rgba(13,18,37,0.5)"; e.currentTarget.style.borderColor = "#ffffff"; }}
+          className="inline-block text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 font-bold transition-all duration-200"
+          style={{ border: "1px solid #2563eb", color: "#2563eb" }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.color = "#ffffff"; }}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#2563eb"; }}
         >
-          ▶ Watch My Testimony
+          Learn About HB 198
         </a>
       </div>
     </div>
@@ -208,7 +244,7 @@ function Loader({ done }: { done: boolean }) {
           <circle cx="40" cy="40" r="34" fill="none" stroke="#1e2d45" strokeWidth="3" />
           <circle cx="40" cy="40" r="34" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray="60 154" strokeLinecap="round" />
         </svg>
-        <span style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "2rem", color: "#e8edf8", lineHeight: 1, marginTop: "4px" }}>N</span>
+        <span style={{ fontFamily: "'Rhodium Libre', serif", fontSize: "2rem", color: "#e8edf8", lineHeight: 1 }}>N</span>
       </div>
       <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
@@ -421,7 +457,7 @@ export default function Home() {
             alt="Nolan Pastore"
             id="parallax-hero"
             className="absolute w-full object-cover"
-            style={{ filter: "brightness(0.75) saturate(0.9)", top: "5%", height: "130%", objectPosition: "center 85%" }}
+            style={{ filter: "brightness(0.75) saturate(0.9)", top: "0%", height: "130%", objectPosition: "center 85%" }}
           />
           <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to left, rgba(13,18,37,0.95) 45%, rgba(13,18,37,0.6) 62%, transparent 78%)" }} />
           <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, rgba(13,18,37,0.95) 20%, rgba(13,18,37,0.3) 50%, transparent 80%)" }} />
@@ -704,13 +740,13 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/disney-1.jpg", "/disney-2.jpg", "/disney-3.jpg", "/disney-4.jpg"]} />
+                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>
                   <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Disney Dreamers Academy</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
-                    {["🏆 Selected for the exclusive Disney Dreamers Academy, a competitive program recognizing promising students with outstanding leadership potential and creative vision.", "Coded and developed new light sequences for MagicBand+ products at interactive band touchpoints throughout the park.", "Led simulations with Disney executives and coding professionals to develop client interaction and professional communication skills."].map((p, j) => (
+                    {["🏆 Selected for Disney Dreamers Academy", "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.", "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences."].map((p, j) => (
                       <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
                     ))}
                   </div>
@@ -728,9 +764,7 @@ export default function Home() {
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Ohio House of Representatives</p>
                   <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>State-Level Testimony — HB 198</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
-                    {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to learn and communicate — and I have spent years advocating for others facing the same barriers.",
-"I testified before the Ohio House of Representatives in favor of House Bill 198, which would require health insurance to cover hearing aids for individuals twenty-two and under. I also authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to raise awareness.",
-"I am proud that Governor DeWine signed a similar bill in January 2023, but I believe the fight is far from over — I will continue advocating until every state requires insurance coverage for hearing aids for children."].map((p, j) => (
+                    {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically — and have spent years advocating for others facing the same barriers.", "Testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "Authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023 — a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
                       <p key={j}>{p}</p>
                     ))}
                   </div>

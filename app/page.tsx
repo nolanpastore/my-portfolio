@@ -117,48 +117,57 @@ function OutlineBtn({ href, children }: { href: string; children: React.ReactNod
 }
 
 /* ── INVOLVEMENT SLIDESHOW ── */
-function InvolvementSlideshow({ photos }: { photos: string[] }) {
+function InvolvementSlideshow({ photos, positions }: { photos: string[]; positions?: string[] }) {
   const [current, setCurrent] = useState(0);
-  const [prev, setPrev] = useState<number | null>(null);
+  const [animating, setAnimating] = useState(false);
+  const [outgoing, setOutgoing] = useState<number | null>(null);
   const [direction, setDirection] = useState<"left" | "right">("right");
 
   const go = (next: number, dir: "left" | "right") => {
-    if (next === current) return;
+    if (animating || next === current) return;
     setDirection(dir);
-    setPrev(current);
+    setOutgoing(current);
+    setAnimating(true);
     setCurrent(next);
-    setTimeout(() => setPrev(null), 500);
+    setTimeout(() => {
+      setOutgoing(null);
+      setAnimating(false);
+    }, 500);
   };
+
+  const getPos = (i: number) => positions?.[i] ?? "center";
 
   return (
     <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
       <style>{`
-        .slide-enter-right { animation: slideFromRight 500ms cubic-bezier(.4,0,.2,1) forwards; }
-        .slide-enter-left  { animation: slideFromLeft  500ms cubic-bezier(.4,0,.2,1) forwards; }
-        .slide-exit-right  { animation: slideToLeft    500ms cubic-bezier(.4,0,.2,1) forwards; }
-        .slide-exit-left   { animation: slideToRight   500ms cubic-bezier(.4,0,.2,1) forwards; }
+        .slide-from-right { animation: slideFromRight 500ms cubic-bezier(.4,0,.2,1) forwards; }
+        .slide-from-left  { animation: slideFromLeft  500ms cubic-bezier(.4,0,.2,1) forwards; }
+        .slide-to-left    { animation: slideToLeft    500ms cubic-bezier(.4,0,.2,1) forwards; }
+        .slide-to-right   { animation: slideToRight   500ms cubic-bezier(.4,0,.2,1) forwards; }
         @keyframes slideFromRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
         @keyframes slideFromLeft  { from { transform: translateX(-100%); } to { transform: translateX(0); } }
         @keyframes slideToLeft    { from { transform: translateX(0); } to { transform: translateX(-100%); } }
         @keyframes slideToRight   { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        .slide-img { transition: transform 500ms ease; }
+        .slide-img:hover { transform: scale(1.05); }
       `}</style>
 
-      {/* Exiting image */}
-      {prev !== null && (
+      {/* Outgoing image */}
+      {outgoing !== null && (
         <img
-          src={photos[prev]}
+          src={photos[outgoing]}
           alt=""
-          className={`absolute inset-0 w-full h-full object-cover ${direction === "right" ? "slide-exit-right" : "slide-exit-left"}`}
-          style={{ filter: "brightness(0.85)" }}
+          className={`absolute inset-0 w-full h-full object-cover ${direction === "right" ? "slide-to-left" : "slide-to-right"}`}
+          style={{ filter: "brightness(0.85)", objectPosition: getPos(outgoing) }}
         />
       )}
-      {/* Entering image */}
+
+      {/* Current image */}
       <img
-        key={current}
         src={photos[current]}
         alt={`Slide ${current + 1}`}
-        className={`absolute inset-0 w-full h-full object-cover ${prev !== null ? (direction === "right" ? "slide-enter-right" : "slide-enter-left") : ""}`}
-        style={{ filter: "brightness(0.85)" }}
+        className={`absolute inset-0 w-full h-full object-cover slide-img ${animating ? (direction === "right" ? "slide-from-right" : "slide-from-left") : ""}`}
+        style={{ filter: "brightness(0.85)", objectPosition: getPos(current) }}
       />
 
       <button onClick={() => go(current === 0 ? photos.length - 1 : current - 1, "left")} className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 z-10 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
@@ -221,9 +230,9 @@ function InvolvementVideo() {
           target="_blank"
           rel="noreferrer"
           className="inline-block text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 font-bold transition-all duration-200"
-          style={{ border: "1px solid #2563eb", color: "#2563eb" }}
-          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.color = "#ffffff"; }}
-          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#2563eb"; }}
+          style={{ border: "1px solid #ffffff", color: "#ffffff" }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#ffffff"; e.currentTarget.style.color = "#0d1225"; }}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#ffffff"; }}
         >
           Learn About HB 198
         </a>
@@ -653,11 +662,11 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="sga" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/sga.jpg", "/sga2.jpg"]} />
+                  <InvolvementSlideshow photos={["/sga.jpg", "/sga2.jpg"]} positions={["center 60%", "center"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>UD Student Government Association</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Director of Marianist Involvement</h3>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>Director of Marianist Involvement</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
                     {["🏆 Named 2026 SGA Member of the Year", "In my role, I work to connect students with the University of Dayton's Catholic and Marianist identity and foster interfaith dialogue and understanding across campus.", "I organized and hosted a dinner and dialogue event on Marianist social justice history, bringing together students, faculty, and Marianists.", "Over the course of the year, I built relationships across Campus Ministry, student government, faith communities, and student organizations to strengthen belonging and diversity at UD."].map((p, j) => (
                       <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
@@ -677,7 +686,7 @@ export default function Home() {
                 </div>
                 <div className="md:order-1">
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Care360 Hospice</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Legacy Project Volunteer</h3>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>Legacy Project Volunteer</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
                     {["I help preserve the life stories of hospice patients by transforming audio recordings, photographs, and personal materials into written narratives for their families.", "These stories are then presented to the hospice patient for approval, and given to the patient's family to help preserve their legacy.", "This work has deepened my appreciation for careful listening and the power of storytelling."].map((p, j) => (
                       <p key={j}>{p}</p>
@@ -706,7 +715,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Leader</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Interfaith Student Council</h3>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>Interfaith Student Council</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
                     {["I work alongside students from diverse religious and philosophical backgrounds to foster dialogue, understanding, and genuine inclusion on campus.", "We've collaborated with SGA to launch projects and events that build relationships across different traditions.", "This experience has reinforced my belief that empathy and curiosity are foundational leadership skills."].map((p, j) => (
                       <p key={j}>{p}</p>
@@ -726,7 +735,7 @@ export default function Home() {
                 </div>
                 <div className="md:order-1">
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Student Transitions and Family Programs</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Camp Counselor</h3>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>Camp Counselor</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
                     {["🏆 Named 2025 Camp Blue Counselor of the Year", "I served as a Blue Crew Counselor during the University of Dayton's Camp Blue orientation experience, mentoring a group of 15 incoming first-year students.", "Alongside fellow counselors, I guided students through a week of leadership activities, team-building exercises, and service projects designed to help them transition into college life.", "This experience deepened my commitment to peer mentorship and reinforced how much the first few days of college can shape a student's sense of belonging."].map((p, j) => (
                       <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
@@ -740,11 +749,11 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} />
+                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} positions={["center", "center", "center", "center 70%"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Disney Dreamers Academy</h3>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>Disney Dreamers Academy</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
                     {["🏆 Selected for Disney Dreamers Academy", "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.", "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences."].map((p, j) => (
                       <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
@@ -762,7 +771,7 @@ export default function Home() {
                 </div>
                 <div className="md:order-1">
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Ohio House of Representatives</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>State-Level Testimony — HB 198</h3>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>State-Level Testimony — HB 198</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
                     {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically — and have spent years advocating for others facing the same barriers.", "Testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "Authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023 — a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
                       <p key={j}>{p}</p>

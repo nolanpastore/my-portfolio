@@ -161,9 +161,20 @@ function InvolvementSlideshow({ photos }: { photos: string[] }) {
 
 /* ── INVOLVEMENT VIDEO ── */
 function InvolvementVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleWatch = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.requestFullscreen) v.requestFullscreen();
+    else if ((v as any).webkitEnterFullscreen) (v as any).webkitEnterFullscreen();
+    v.play();
+  };
+
   return (
     <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
@@ -174,17 +185,15 @@ function InvolvementVideo() {
         <source src="/hb198.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 flex items-center justify-center">
-        <a
-          href="https://www.ohiohouse.gov/legislation/134/hb198/committee"
-          target="_blank"
-          rel="noreferrer"
+        <button
+          onClick={handleWatch}
           className="text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
-          style={{ border: "2px solid #ffffff", color: "#ffffff", backgroundColor: "rgba(13,18,37,0.5)" }}
-          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.borderColor = "#2563eb"; }}
-          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "rgba(13,18,37,0.5)"; e.currentTarget.style.borderColor = "#ffffff"; }}
+          style={{ border: "2px solid #ffffff", color: "#ffffff", backgroundColor: "rgba(13,18,37,0.5)", cursor: "pointer" }}
+          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.borderColor = "#2563eb"; }}
+          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => { e.currentTarget.style.backgroundColor = "rgba(13,18,37,0.5)"; e.currentTarget.style.borderColor = "#ffffff"; }}
         >
           ▶ Watch My Testimony
-        </a>
+        </button>
       </div>
     </div>
   );
@@ -415,7 +424,7 @@ export default function Home() {
             alt="Nolan Pastore"
             id="parallax-hero"
             className="absolute w-full object-cover"
-            style={{ filter: "brightness(0.75) saturate(0.9)", top: "5%", height: "130%", objectPosition: "center 85%" }}
+            style={{ filter: "brightness(0.75) saturate(0.9)", top: "0%", height: "130%", objectPosition: "center 85%" }}
           />
           <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to left, rgba(13,18,37,0.95) 45%, rgba(13,18,37,0.6) 62%, transparent 78%)" }} />
           <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, rgba(13,18,37,0.95) 20%, rgba(13,18,37,0.3) 50%, transparent 80%)" }} />
@@ -702,7 +711,7 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/disney-1.jpg", "/disney-2.jpg", "/disney-3.jpg", "/disney-4.jpg"]} />
+                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>

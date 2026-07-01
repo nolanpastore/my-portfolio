@@ -78,7 +78,7 @@ export default function Recommendations() {
                 <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#2563eb" }}>
                   {letter.relationship}
                 </p>
-                <h2 className="text-xl font-bold mb-1" style={{ color: "#e8edf8", fontFamily: "'Nunito', sans-serif" }}>
+                <h2 className="text-xl font-bold mb-1" style={{ color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>
                   {letter.name}
                 </h2>
                 <p className="text-sm font-medium" style={{ color: "#7a90b8" }}>

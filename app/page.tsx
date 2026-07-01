@@ -654,7 +654,7 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="sga" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/sga.jpg", "/sga2.jpg"]} positions ={["center 65%", "center"]} />
+                  <InvolvementSlideshow photos={["/sga.jpg", "/sga2.jpg"]} positions ={["top", "center"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>UD Student Government Association</p>
@@ -741,7 +741,7 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} positions={["center", "center", "center", "center 70%"]} />
+                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} positions={["center", "center", "center", "top"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>
@@ -765,7 +765,7 @@ export default function Home() {
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Ohio House of Representatives</p>
                   <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Ohio House Bill 198 Advocate</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
-                    {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically — and have spent years advocating for others facing the same barriers.", "Testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "Authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023 — a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
+                    {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically — and have spent years advocating for others facing the same barriers.", "I testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "I authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023, which is a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
                       <p key={j}>{p}</p>
                     ))}
                   </div>

@@ -755,7 +755,7 @@ export default function Home() {
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>
                   <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Disney Dreamers Academy</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
-                    {["🏆 Selected for competitive Disney Dreamers Academy program", "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.", "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences."].map((p, j) => (
+                    {["🏆 Selected for competitive Disney Dreamers program", "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.", "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences."].map((p, j) => (
                       <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
                     ))}
                   </div>

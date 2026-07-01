@@ -119,40 +119,46 @@ function OutlineBtn({ href, children }: { href: string; children: React.ReactNod
 /* ── INVOLVEMENT SLIDESHOW ── */
 function InvolvementSlideshow({ photos }: { photos: string[] }) {
   const [current, setCurrent] = useState(0);
+  const [sliding, setSliding] = useState(false);
+  const [direction, setDirection] = useState<"left" | "right">("right");
+
+  const go = (next: number, dir: "left" | "right") => {
+    if (sliding) return;
+    setDirection(dir);
+    setSliding(true);
+    setTimeout(() => {
+      setCurrent(next);
+      setSliding(false);
+    }, 350);
+  };
+
+  const prev = () => go(current === 0 ? photos.length - 1 : current - 1, "left");
+  const next = () => go(current === photos.length - 1 ? 0 : current + 1, "right");
+
   return (
     <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
+      <style>{`
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideInLeft  { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .slide-right { animation: slideInRight 350ms ease; }
+        .slide-left  { animation: slideInLeft  350ms ease; }
+      `}</style>
       <img
+        key={current}
         src={photos[current]}
         alt={`Slide ${current + 1}`}
-        className="w-full h-full object-cover transition-opacity duration-500"
+        className={`w-full h-full object-cover ${sliding ? "" : direction === "right" ? "slide-right" : "slide-left"}`}
         style={{ filter: "brightness(0.85)" }}
       />
-      <button
-        onClick={() => setCurrent(c => (c === 0 ? photos.length - 1 : c - 1))}
-        className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200"
-        style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}
-      >
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-          <path d="M13 15l-5-5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+      <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M13 15l-5-5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
       </button>
-      <button
-        onClick={() => setCurrent(c => (c === photos.length - 1 ? 0 : c + 1))}
-        className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200"
-        style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}
-      >
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-          <path d="M7 15l5-5-5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+      <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-9 h-9 transition-all duration-200" style={{ backgroundColor: "rgba(13,18,37,0.8)", border: "1px solid #1e2d45", color: "#e8edf8" }}>
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M7 15l5-5-5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
       </button>
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
         {photos.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className="w-2 h-2 rounded-full transition-all duration-200"
-            style={{ backgroundColor: i === current ? "#ffffff" : "rgba(255,255,255,0.4)" }}
-          />
+          <button key={i} onClick={() => go(i, i > current ? "right" : "left")} className="w-2 h-2 rounded-full transition-all duration-200" style={{ backgroundColor: i === current ? "#ffffff" : "rgba(255,255,255,0.4)" }} />
         ))}
       </div>
     </div>
@@ -161,20 +167,9 @@ function InvolvementSlideshow({ photos }: { photos: string[] }) {
 
 /* ── INVOLVEMENT VIDEO ── */
 function InvolvementVideo() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleWatch = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.requestFullscreen) v.requestFullscreen();
-    else if ((v as any).webkitEnterFullscreen) (v as any).webkitEnterFullscreen();
-    v.play();
-  };
-
   return (
     <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ border: "1px solid #1e2d45" }}>
       <video
-        ref={videoRef}
         autoPlay
         muted
         loop
@@ -185,15 +180,17 @@ function InvolvementVideo() {
         <source src="/hb198.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 flex items-center justify-center">
-        <button
-          onClick={handleWatch}
+        <a
+          href="https://www.ohiohouse.gov/legislation/134/hb198/committee"
+          target="_blank"
+          rel="noreferrer"
           className="text-[11px] tracking-[0.2em] uppercase px-6 py-3 font-bold transition-all duration-200"
-          style={{ border: "2px solid #ffffff", color: "#ffffff", backgroundColor: "rgba(13,18,37,0.5)", cursor: "pointer" }}
-          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.borderColor = "#2563eb"; }}
-          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => { e.currentTarget.style.backgroundColor = "rgba(13,18,37,0.5)"; e.currentTarget.style.borderColor = "#ffffff"; }}
+          style={{ border: "2px solid #ffffff", color: "#ffffff", backgroundColor: "rgba(13,18,37,0.5)" }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "#2563eb"; e.currentTarget.style.borderColor = "#2563eb"; }}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { e.currentTarget.style.backgroundColor = "rgba(13,18,37,0.5)"; e.currentTarget.style.borderColor = "#ffffff"; }}
         >
           ▶ Watch My Testimony
-        </button>
+        </a>
       </div>
     </div>
   );
@@ -424,7 +421,7 @@ export default function Home() {
             alt="Nolan Pastore"
             id="parallax-hero"
             className="absolute w-full object-cover"
-            style={{ filter: "brightness(0.75) saturate(0.9)", top: "0%", height: "130%", objectPosition: "center 85%" }}
+            style={{ filter: "brightness(0.75) saturate(0.9)", top: "5%", height: "130%", objectPosition: "center 85%" }}
           />
           <div className="absolute inset-0 hidden md:block" style={{ background: "linear-gradient(to left, rgba(13,18,37,0.95) 45%, rgba(13,18,37,0.6) 62%, transparent 78%)" }} />
           <div className="absolute inset-0 md:hidden" style={{ background: "linear-gradient(to top, rgba(13,18,37,0.95) 20%, rgba(13,18,37,0.3) 50%, transparent 80%)" }} />
@@ -620,9 +617,7 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="sga" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <div className="w-full aspect-[4/3] overflow-hidden" style={{ border: "1px solid #1e2d45" }}>
-                    <img src="/sga.jpg" alt="SGA" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)", objectPosition: "center 25%" }} />
-                  </div>
+                  <InvolvementSlideshow photos={["/sga.jpg", "/sga2.jpg"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>UD Student Government Association</p>
@@ -641,7 +636,7 @@ export default function Home() {
               <div id="care360" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div className="md:order-2">
                   <div className="w-full aspect-[4/3] overflow-hidden" style={{ border: "1px solid #1e2d45" }}>
-                    <img src="/care360.jpg" alt="Care360" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)", transform: "scale(0.85)", transformOrigin: "center" }} />
+                    <img src="/care360.jpg" alt="Care360" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)" }} />
                   </div>
                 </div>
                 <div className="md:order-1">
@@ -671,9 +666,7 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="interfaith" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <div className="w-full aspect-[4/3] overflow-hidden" style={{ border: "1px solid #1e2d45" }}>
-                    <img src="/interfaith.jpg" alt="Interfaith" className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" style={{ filter: "brightness(0.85)" }} />
-                  </div>
+                  <InvolvementSlideshow photos={["/interfaith.jpg", "/interfaith2.jpg"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Leader</p>
@@ -711,13 +704,13 @@ export default function Home() {
             <Reveal delay={80}>
               <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
                 <div>
-                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} />
+                  <InvolvementSlideshow photos={["/disney-1.jpg", "/disney-2.jpg", "/disney-3.jpg", "/disney-4.jpg"]} />
                 </div>
                 <div>
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>
                   <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Disney Dreamers Academy</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
-                    {["🏆 Selected for the exclusive Disney Dreamers Academy Program", "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.", "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences.",].map((p, j) => (
+                    {["🏆 Selected for the exclusive Disney Dreamers Academy, a competitive program recognizing promising students with outstanding leadership potential and creative vision.", "Coded and developed new light sequences for MagicBand+ products at interactive band touchpoints throughout the park.", "Led simulations with Disney executives and coding professionals to develop client interaction and professional communication skills."].map((p, j) => (
                       <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
                     ))}
                   </div>
@@ -733,7 +726,7 @@ export default function Home() {
                 </div>
                 <div className="md:order-1">
                   <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Ohio House of Representatives</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Hearing Aid Accessibility Advocate</h3>
+                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>State-Level Testimony — HB 198</h3>
                   <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
                     {["Diagnosed with hearing loss as a child, I experienced firsthand how access to a hearing aid transformed my ability to communicate and thrive academically — and have spent years advocating for others facing the same barriers.", "Testified before the Ohio House of Representatives in favor of House Bill 198, which required health insurance to cover hearing aids for individuals twenty-two and under.", "Authored testimonial letters to Ohio government branches and health committees, and shared my story publicly to build awareness around hearing aid insurance coverage gaps.", "Governor DeWine signed a similar bill in January 2023 — a meaningful milestone in a broader fight to ensure every state requires insurance coverage for hearing aids for children."].map((p, j) => (
                       <p key={j}>{p}</p>

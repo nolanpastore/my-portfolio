@@ -51,9 +51,9 @@ export default function Recommendations() {
           </p>
           <h1
             style={{
-              fontFamily: "'Rhodium Libre', serif",
+              fontFamily: "'Nunito', sans-serif",
               fontSize: "clamp(2rem, 5vw, 3.5rem)",
-              fontWeight: 400,
+              fontWeight: 800,
               color: "#e8edf8",
               lineHeight: 1.1,
             }}
@@ -78,7 +78,7 @@ export default function Recommendations() {
                 <p className="text-[10px] tracking-[0.2em] uppercase font-bold mb-2" style={{ color: "#2563eb" }}>
                   {letter.relationship}
                 </p>
-                <h2 className="text-xl font-bold mb-1" style={{ color: "#e8edf8", fontFamily: "'Rhodium Libre', serif" }}>
+                <h2 className="text-xl font-bold mb-1" style={{ color: "#e8edf8", fontFamily: "'Nunito', sans-serif" }}>
                   {letter.name}
                 </h2>
                 <p className="text-sm font-medium" style={{ color: "#7a90b8" }}>

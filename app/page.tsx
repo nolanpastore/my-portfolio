@@ -468,6 +468,8 @@ export default function Home() {
             Student, Developer, and All-Around Nice Guy
           </p>
         </div>
+      </section>
+      
 
 
 {/* ABOUT */}
@@ -548,7 +550,6 @@ export default function Home() {
             </svg>
           </div>
         </a>
-      </section>
 
       {/* EXPERIENCE */}
       <section id="experience" style={{ backgroundColor: "#0d1225" }}>

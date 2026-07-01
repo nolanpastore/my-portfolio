@@ -153,12 +153,12 @@ function InvolvementSlideshow({ photos, positions }: { photos: string[]; positio
       `}</style>
 
       {/* Exiting image */}
-      {prev !== null && (
+      {outgoing !== null && (
         <img
-          src={photos[prev]}
+          src={photos[outgoing]}
           alt=""
           className={`absolute inset-0 w-full h-full object-cover ${direction === "right" ? "slide-exit-right" : "slide-exit-left"}`}
-          style={{ filter: "brightness(0.85)", objectPosition: getPos(prev) }}
+          style={{ filter: "brightness(0.85)", objectPosition: getPos(outgoing) }}
         />
       )}
       {/* Entering image */}
@@ -166,7 +166,7 @@ function InvolvementSlideshow({ photos, positions }: { photos: string[]; positio
         key={current}
         src={photos[current]}
         alt={`Slide ${current + 1}`}
-        className={`absolute inset-0 w-full h-full object-cover slide-img ${prev !== null ? (direction === "right" ? "slide-enter-right" : "slide-enter-left") : ""}`}
+        className={`absolute inset-0 w-full h-full object-cover slide-img ${outgoing !== null ? (direction === "right" ? "slide-enter-right" : "slide-enter-left") : ""}`}
         style={{ filter: "brightness(0.85)", objectPosition: getPos(current) }}
       />
 

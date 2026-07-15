@@ -578,7 +578,7 @@ export default function Home() {
         <div className="px-6 md:px-20 py-24 max-w-6xl mx-auto">
           <Reveal>
             <Heading>Experience</Heading>
-            <div className="max-w-3xl">
+            <div>
               {[
                 { role: "Technology Intern", org: "PNC Bank", date: "Jun 2026 — Present", location: "Pittsburgh, PA", bullets: ["Built a Microsoft Copilot AI assistant to streamline data analysis and project work.", "Designed Power BI dashboards with SharePoint and Power Automate to drive business insights."] },
                 { role: "Student Ambassador (Tour Guide)", org: "University of Dayton", date: "Aug 2025 — Present", location: "Dayton, OH", bullets: ["Lead campus tours for prospective students and families.", "Support admission events and represent UD with professionalism and enthusiasm."] },

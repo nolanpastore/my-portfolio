@@ -55,12 +55,17 @@ function TimelineItem({ title, subtitle, date, location, bullets, light = false,
         <p className="text-base font-semibold mb-3" style={{ color: "#e8edf8" }}>{subtitle}</p>
         {bullets && bullets.length > 0 && (
           <ul className="space-y-1.5">
-            {bullets.map((b, i) => (
-  <li key={i} className="text-[15px] leading-7 flex gap-2" style={{ color: light ? "#4a6080" : b.startsWith("🏆") ? "#e8edf8" : "#9eb0cc", fontWeight: b.startsWith("🏆") ? 800 : 400 }}>
-    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#2563eb", marginTop: 9 }} />
-    {b}
-  </li>
+            {bullets.filter(b => b.startsWith("🏆")).map((b, i) => (
+  <p key={`award-${i}`} className="text-[15px] font-extrabold mb-3" style={{ color: "#e8edf8" }}>{b}</p>
 ))}
+<ul className="space-y-1.5">
+  {bullets.filter(b => !b.startsWith("🏆")).map((b, i) => (
+    <li key={i} className="text-[15px] leading-7 flex gap-2" style={{ color: light ? "#4a6080" : "#9eb0cc" }}>
+      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: "#2563eb", marginTop: 9 }} />
+      {b}
+    </li>
+  ))}
+</ul>
           </ul>
         )}
       </div>
@@ -578,7 +583,7 @@ export default function Home() {
                 { role: "Technology Intern", org: "PNC Bank", date: "Jun 2026 — Present", location: "Pittsburgh, PA", bullets: ["Built a Microsoft Copilot AI assistant to streamline data analysis and project work.", "Designed Power BI dashboards with SharePoint and Power Automate to drive business insights."] },
                 { role: "Student Ambassador (Tour Guide)", org: "University of Dayton", date: "Aug 2025 — Present", location: "Dayton, OH", bullets: ["Lead campus tours for prospective students and families.", "Support admission events and represent UD with professionalism and enthusiasm."] },
                 { role: "Technical Support Representative", org: "University of Dayton", date: "Mar 2025 — Present", location: "Dayton, OH", bullets: ["Assist with hardware, software, network, and account issues through in-person help desk and phone line.", "Document and escalate unresolved issues; support university Windows systems."] },
-                { role: "Social Media Coordinator", org: "Hartville RV Center, Inc.", date: "Apr 2019 — Jan 2025", location: "Hartville, OH", bullets: ["🏆 Produced award-winning video content recognized by RVBusiness Magazine’s Top 50 Dealer Awards Program", "Managed all social media platforms and content strategy.", "Designed marketing materials; automated content creation to boost reach and conversions."] },
+                { role: "Social Media Coordinator", org: "Hartville RV Center, Inc.", date: "Apr 2019 — Jan 2025", location: "Hartville, OH", bullets: ["🏆 Produced award-winning video content recognized by RVBusiness Magazine’s Top 50 Dealer Awards", "Managed all social media platforms and content strategy.", "Designed marketing materials; automated content creation to boost reach and conversions."] },
               ].map((item, i, arr) => (
                 <Reveal key={i} delay={i * 60}>
                   <TimelineItem title={item.role} subtitle={item.org} date={item.date} location={item.location} bullets={item.bullets} light={false} last={i === arr.length - 1} />

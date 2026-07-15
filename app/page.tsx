@@ -578,7 +578,7 @@ export default function Home() {
                 { role: "Technology Intern", org: "PNC Bank", date: "Jun 2026 — Present", location: "Pittsburgh, PA", bullets: ["Built a Microsoft Copilot AI assistant to streamline data analysis and project work.", "Designed Power BI dashboards with SharePoint and Power Automate to drive business insights."] },
                 { role: "Student Ambassador (Tour Guide)", org: "University of Dayton", date: "Aug 2025 — Present", location: "Dayton, OH", bullets: ["Lead campus tours for prospective students and families.", "Support admission events and represent UD with professionalism and enthusiasm."] },
                 { role: "Technical Support Representative", org: "University of Dayton", date: "Mar 2025 — Present", location: "Dayton, OH", bullets: ["Assist with hardware, software, network, and account issues through in-person help desk and phone line.", "Document and escalate unresolved issues; support university Windows systems."] },
-                { role: "Social Media Coordinator", org: "Hartville RV Center, Inc.", date: "Apr 2019 — Jan 2025", location: "Hartville, OH", bullets: ["🏆 RVBusiness Magazine Top 50 Dealer Award — Video Content", "Managed all social media platforms and content strategy.", "Designed marketing materials; automated content creation to boost reach and conversions."] },
+                { role: "Social Media Coordinator", org: "Hartville RV Center, Inc.", date: "Apr 2019 — Jan 2025", location: "Hartville, OH", bullets: ["🏆 Produced award-winning video content recognized by RVBusiness Magazine’s Top 50 Dealer Awards Program", "Managed all social media platforms and content strategy.", "Designed marketing materials; automated content creation to boost reach and conversions."] },
               ].map((item, i, arr) => (
                 <Reveal key={i} delay={i * 60}>
                   <TimelineItem title={item.role} subtitle={item.org} date={item.date} location={item.location} bullets={item.bullets} light={false} last={i === arr.length - 1} />
@@ -632,7 +632,7 @@ export default function Home() {
                     <h3 className="text-lg font-bold mb-0.5" style={{ fontFamily: "'Nunito', sans-serif", color: "#1a2540" }}>Lake High School</h3>
                     <p className="text-sm font-semibold mb-5" style={{ color: "#4a6080" }}>High School Diploma</p>
                     <div className="space-y-4 text-sm leading-7" style={{ color: "#4a6080" }}>
-                      <p><span className="font-bold" style={{ color: "#1a2540" }}>Activities: </span> GenYes Member (Student Lead IT Help Desk) · Spring Musical · Tennis · Debate Team (Founder)</p>
+                      <p><span className="font-bold" style={{ color: "#1a2540" }}>Activities: </span> GenYes Member (Student-Led IT Help Desk) · Spring Musical · Tennis · Debate Team (Founder)</p>
                       <div>
                         <p className="font-bold mb-1" style={{ color: "#1a2540" }}>Awards &amp; Honors:</p>
                         <ul className="space-y-1 ml-1">

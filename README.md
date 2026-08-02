@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nolanpastore.com — Personal Portfolio
 
-## Getting Started
+A fully custom personal portfolio website built from scratch to showcase my experience, projects, education, and community involvement.
 
-First, run the development server:
+## Live Site
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+[nolanpastore.com](https://nolanpastore.com)
+
+## About
+
+This site brings together my work in technology, business systems, communication, and community engagement.
+
+## Built With
+
+- **Next.js** — React framework and routing
+- **TypeScript** — type-safe development
+- **Tailwind CSS** — responsive, utility-first styling
+- **Vercel** — deployment and hosting
+- **FormSubmit** — contact form handling
+
+## Features
+
+- Custom typewriter hero animation with blinking cursor
+- Parallax hero image on scroll
+- Custom loading screen
+- Scroll-reveal animations powered by `IntersectionObserver`
+- Responsive desktop and mobile layouts
+- Frosted navigation bar that appears while scrolling
+- Anchor-linked navigation with dropdown menus
+- Interactive image slideshow with directional transitions
+- Embedded testimony video with fullscreen playback
+- Project pages and downloadable résumé
+- Contact form integration
+
+## Featured Work
+
+- **Can Recycler Machine** — Personal engineering project.
+- **NFL Stats Analysis Program** — Python data-analysis project using Pandas, Matplotlib, Seaborn, and CSV data from 2003–2023 NFL seasons.
+- **Matchmaker Program** — Java application that determines Myers-Briggs personality types and ranks user compatibility.
+- **Care360 Legacy Project** — Examples of volunteer storytelling work preserving hospice patients’ life stories.
+
+## Project Structure
+
+```text
+app/
+├── page.tsx              # Main portfolio page
+├── can-recycler/         # Can Recycler project page
+├── nfl-stats/            # NFL statistics project page
+├── care360/              # Care360 legacy-project page
+└── recommendations/      # Letters of recommendation
+
+public/
+├── images and media
+├── Nolan_Pastore_Resume.pdf
+└── hb198.mp4
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Running Locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+git clone https://github.com/nolanpastore/my-portfolio.git
+cd my-portfolio
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## Contact
 
-To learn more about Next.js, take a look at the following resources:
+- Portfolio: [nolanpastore.com](https://nolanpastore.com)
+- LinkedIn: [linkedin.com/in/nolanpastore](https://www.linkedin.com/in/nolanpastore/)
+- GitHub: [github.com/nolanpastore](https://github.com/nolanpastore)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is personal portfolio source code, please do not reuse its content, images, or personal materials without permission. Thank you!

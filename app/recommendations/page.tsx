@@ -4,20 +4,19 @@ import Link from "next/link";
 
 const letters = [
   {
+    name: "Wenting Wang",
+    title: "MLOps Data and Automation",
+    org: "PNC Bank",
+    file: "/rec-wenting-wang.pdf",
+    relationship: "Direct Manager — PNC Bank Internship",
+  },
+  {
     name: "Dan Harold",
     title: "Principal",
     org: "Lake High School",
     file: "/rec-dan-harold.pdf",
     relationship: "High School Principal",
   },
-  // Add more here as you get them:
-  // {
-  //   name: "Jane Smith",
-  //   title: "Director",
-  //   org: "Some Organization",
-  //   file: "/rec-jane-smith.pdf",
-  //   relationship: "Supervisor",
-  // },
 ];
 
 export default function Recommendations() {

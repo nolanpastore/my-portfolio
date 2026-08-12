@@ -281,23 +281,27 @@ function Navbar({ visible }: { visible: boolean }) {
   }, []);
 
   const links: { label: string; href: string; dropdown?: { label: string; href: string }[] }[] = [
-    { label: "Overview", href: "#about" },
-    { label: "Experience", href: "#experience" },
-    { label: "Education", href: "#education" },
-    { label: "Involvement", href: "#involvement", dropdown: [
+  { label: "Overview", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Education", href: "#education" },
+  {
+    label: "Involvement",
+    href: "#involvement",
+    dropdown: [
       { label: "Care360 Legacy", href: "/care360" },
-      { label: "Disney Dreamers", href: "#disney" },
-      { label: "HB 198", href: "#hb198" },
-    ]},
-    { label: "Projects", href: "#projects", dropdown: [
+    ],
+  },
+  {
+    label: "Projects",
+    href: "#projects",
+    dropdown: [
       { label: "Can Recycler", href: "/can-recycler" },
       { label: "NFL Stats", href: "/nfl-stats" },
-    ]},
-    { label: "Connect", href: "#contact" },
-    { label: "More", href: "#", dropdown: [
-      { label: "Recommendations", href: "/recommendations" },
-    ]},
-  ];
+    ],
+  },
+  { label: "Recommendations", href: "/recommendations" },
+  { label: "Connect", href: "#contact" },
+];
 
   return (
     <nav
@@ -514,8 +518,8 @@ export default function Home() {
             ["NAME", "Nolan Pastore"],
             ["SCHOOL", "University of Dayton"],
             ["PROGRAM", "CIS + Communication Management"],
-            ["GRADE", "Rising Junior"],
-            ["LOCATION", "Pittsburgh, PA"],
+            ["GRADE", "Junior"],
+            ["LOCATION", "Dayton, OH"],
             ["INTERESTS", "Technology Strategy · Business Systems · Communication"],
           ].map(([label, value], i) => (
             <div key={i} className="py-4" style={{ borderBottom: "1px solid #d0dae8" }}>
@@ -611,7 +615,7 @@ export default function Home() {
             <Heading>Experience</Heading>
             <div>
               {[
-                { role: "Technology Intern", org: "PNC Bank", date: "Jun 2026 — Present", location: "Pittsburgh, PA", bullets: ["🏆 Designed the 1st-place pitch deck for a product pitch competition", "Built a Microsoft Copilot AI assistant to streamline data analysis and project work.", "Designed Power BI dashboards with SharePoint and Power Automate to drive business insights."] },
+                { role: "Technology Intern", org: "PNC Bank", date: "Jun 2026 — Aug 2026", location: "Pittsburgh, PA", bullets: ["🏆 Designed the 1st-place pitch deck for a product pitch competition", "Built a Microsoft Copilot AI assistant to streamline data analysis and project work.", "Designed Power BI dashboards with SharePoint and Power Automate to drive business insights."] },
                 { role: "Student Ambassador (Tour Guide)", org: "University of Dayton", date: "Aug 2025 — Present", location: "Dayton, OH", bullets: ["Lead campus tours for prospective students and families.", "Support admission events and represent UD with professionalism and enthusiasm."] },
                 { role: "Technical Support Representative", org: "University of Dayton", date: "Mar 2025 — Present", location: "Dayton, OH", bullets: ["Assist with hardware, software, network, and account issues through in-person help desk and phone line.", "Document and escalate unresolved issues; support university Windows systems."] },
                 { role: "Social Media Coordinator", org: "Hartville RV Center, Inc.", date: "Apr 2019 — Jan 2025", location: "Hartville, OH", bullets: ["🏆 Produced award-winning video content recognized by RVBusiness Magazine’s Top 50 Dealer Awards", "Managed all social media platforms and content strategy.", "Designed marketing materials; automated content creation to boost reach and conversions."] },
@@ -781,23 +785,59 @@ export default function Home() {
               </div>
             </Reveal>
 
-            {/* DISNEY */}
-            <Reveal delay={80}>
-              <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-                <div>
-                  <InvolvementSlideshow photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]} positions={["center", "center", "center", "top"]} />
+          {/* DISNEY */}
+          <Reveal delay={80}>
+            <div id="disney" className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+              <div>
+                <InvolvementSlideshow
+                  photos={["/disney1.jpg", "/disney2.jpg", "/disney3.jpg", "/disney4.jpg"]}
+                  positions={["center", "center", "center", "top"]}
+                />
+              </div>
+
+              <div>
+                <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>
+                  Walt Disney World
+                </p>
+
+                <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>
+                  Disney Dreamers Academy
+                </h3>
+
+                <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
+                  {[
+                    "🏆 Selected for competitive Disney Dreamers program",
+                    "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.",
+                    "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences.",
+                  ].map((p, j) => (
+                    <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>
+                      {p}
+                    </p>
+                  ))}
                 </div>
-                <div>
-                  <p className="text-[11px] tracking-[0.25em] uppercase mb-2 font-bold" style={{ color: "#2563eb" }}>Walt Disney World</p>
-                  <h3 className="font-bold mb-6 leading-tight" style={{ fontSize: "clamp(1.4rem, 2.5vw, 2rem)", color: "#e8edf8" }}>Disney Dreamers Academy</h3>
-                  <div className="space-y-4 text-[15px] leading-8 font-medium" style={{ color: "#9eb0cc" }}>
-                    {["🏆 Selected for competitive Disney Dreamers program", "At Disney Dreamers Academy, I coded and developed new light sequences for MagicBand+ products at interactive touchpoints throughout the park, working alongside Disney engineers and technology teams.", "I also led simulations with Disney executives and coding professionals focused on client interaction skills, gaining insight into how one of the world's most iconic brands uses technology to create memorable guest experiences."].map((p, j) => (
-                      <p key={j} style={j === 0 ? { fontWeight: 800, color: "#e8edf8" } : {}}>{p}</p>
-                    ))}
-                  </div>
+
+                <div className="mt-6">
+                  <a
+                    href="https://www.disneydreamersacademy.com/dreamers/2022/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-block text-[10px] tracking-[0.2em] uppercase px-5 py-2.5 font-bold transition-all duration-200"
+                    style={{ border: "1px solid #ffffff", color: "#ffffff" }}
+                    onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                      e.currentTarget.style.backgroundColor = "#ffffff";
+                      e.currentTarget.style.color = "#0d1225";
+                    }}
+                    onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                      e.currentTarget.style.backgroundColor = "transparent";
+                      e.currentTarget.style.color = "#ffffff";
+                    }}
+                  >
+                    Learn More About Disney Dreamers
+                  </a>
                 </div>
               </div>
-            </Reveal>
+            </div>
+          </Reveal>
 
             {/* HB198 */}
             <Reveal delay={80}>
